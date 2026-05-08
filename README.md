@@ -1,0 +1,2 @@
+# typescript
+my typescript study
