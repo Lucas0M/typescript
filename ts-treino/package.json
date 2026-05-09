@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec ts-node src/mini-projects/tassertation.ts",
+    "dev": "nodemon --exec ts-node src/mini-projects/tof.ts",
     "build": "tsc"
   },
   "keywords": [],
