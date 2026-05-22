@@ -109,45 +109,75 @@
 // }
 
 
-function maisCaro<T extends { preco: number }>(itens: T[]): T | undefined{
-  let caro = 0
-  for (let item of itens) {
-    if(item.preco > caro){
-      caro = item.preco
-    }
-  }
-  return itens.find(item => item.preco === caro)
-}
+// function maisCaro<T extends { preco: number }>(itens: T[]): T | undefined{
+//   let caro = 0
+//   for (let item of itens) {
+//     if(item.preco > caro){
+//       caro = item.preco
+//     }
+//   }
+//   return itens.find(item => item.preco === caro)
+// }
 
-type Produto = {
-  nome: string
-  preco: number
-}
+// type Produto = {
+//   nome: string
+//   preco: number
+// }
 
-type Servico = {
-  descricao: string
-  preco: number
-}
+// type Servico = {
+//   descricao: string
+//   preco: number
+// }
 
-const produto1: Produto = {
-  nome: "Geladeira",
-  preco: 3000
-}
+// const produto1: Produto = {
+//   nome: "Geladeira",
+//   preco: 3000
+// }
 
-const produto2: Produto = {
-  nome: "Cadeira",
-  preco: 300
-}
+// const produto2: Produto = {
+//   nome: "Cadeira",
+//   preco: 300
+// }
 
-const servico1: Servico = {
-  descricao: "Fazemos pintura de parede",
-  preco: 100
-}
+// const servico1: Servico = {
+//   descricao: "Fazemos pintura de parede",
+//   preco: 100
+// }
 
-const servico2: Servico = {
-  descricao: "Instalamos ar condicionado",
-  preco: 50
-}
+// const servico2: Servico = {
+//   descricao: "Instalamos ar condicionado",
+//   preco: 50
+// }
 
-console.log(maisCaro([produto2, produto1]))
-console.log(maisCaro([servico2, servico1]))
+// console.log(maisCaro([produto2, produto1]))
+// console.log(maisCaro([servico2, servico1]))
+
+
+// Terceiro conteudo: Utility Types 
+
+// Utility Types:
+//  Partial<T> (deixa as prop opcionais);
+//  Required<T> (deixa as prop obrigatorias);
+//  Omit<T, K> (exclui a key que nao é necessaria);
+//  Pick<T, K> (pega apenas as keys necessarias);
+//  Record<K, V> (cria um obj com key value tipados);
+
+
+// type Produto = {
+//   id: number,
+//   nome: string,
+//   preco: number,
+//   senha: string
+// }
+
+// type ProdutoPublico = Omit<Produto, "senha">
+
+// type ProdutoAtualizacao = Partial<Produto>
+
+// type ProdutoResumido = Pick<Produto, "nome" | "preco">
+
+// const estoque: Record<string, number> = {
+//   geladeira: 3000,
+//   microondas: 1200,
+//   cadeira: 300,
+// } 
