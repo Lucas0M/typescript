@@ -1,14 +1,19 @@
-import './App.css'
-import ListaTarefa from './components/ListaTarefa';
-
+import "./App.css";
+import { TarefasProvider } from "./contexts/TarefasProvider";
+import ListaTarefas from "./components/ListaTarefas";
+import FormularioTarefa from "./components/FormularioTarefa";
+import Resumo from "./components/Resumo";
 
 function App() {
-
   return (
-    <div>
-      <ListaTarefa/>
+    <div className="App">
+      <TarefasProvider>
+        <FormularioTarefa />
+        <ListaTarefas />
+        <Resumo />
+      </TarefasProvider>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
