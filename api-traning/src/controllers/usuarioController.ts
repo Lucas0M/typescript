@@ -1,51 +1,112 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import prisma from "../prisma";
+import {
+  atualizarUsuarioSchema,
+  criarUsuarioSchema,
+} from "../schemas/usuarioSchema";
 
-export async function listarUsuarios(req: Request, res: Response) {
-  const usuarios = await prisma.usuario.findMany();
-  res.json(usuarios);
-}
-
-export async function buscarUsuario(req: Request, res: Response) {
-  const id: number = Number(req.params.id);
-  const usuario = await prisma.usuario.findUnique({ where: { id } });
-
-  if (!usuario) {
-    return res.status(404).json({ erro: "Erro user not found!" });
+export async function listarUsuarios(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const usuarios = await prisma.usuario.findMany();
+    res.json(usuarios);
+  } catch (error) {
+    next(error);
   }
-  res.json(usuario);
 }
 
-export async function criarUsuario(req: Request, res: Response) {
-  const { nome, email } = req.body;
+export async function buscarUsuario(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const id: number = Number(req.params.id);
+    const usuario = await prisma.usuario.findUnique({ where: { id } });
 
-  if (!nome || !email) {
-    return res.status(400).json({ erro: "Not enough data!" });
+    if (!usuario) {
+      return res.status(404).json({ erro: "Erro user not found!" });
+    }
+    res.json(usuario);
+  } catch (error) {
+    next(error);
   }
-
-  const newUsuario = await prisma.usuario.create({
-    data: { nome, email },
-  });
-
-  res.status(201).json(newUsuario);
 }
 
-export async function atualizarUsuario(req: Request, res: Response) {
-  const id: number = Number(req.params.id);
-  const { nome, email } = req.body;
+export async function criarUsuario(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const resultado = criarUsuarioSchema.safeParse(req.body);
 
-  const usuario = await prisma.usuario.update({
-    where: { id },
-    data: { nome, email },
-  });
+    if (!resultado.success) {
+      return res
+        .status(400)
+        .json({ erro: resultado.error.flatten().fieldErrors });
+    }
 
-  res.json(usuario);
+    const { nome, email } = resultado.data;
+
+    if (!nome || !email) {
+      return res.status(400).json({ erro: "Not enough data!" });
+    }
+
+    const newUsuario = await prisma.usuario.create({
+      data: { nome, email },
+    });
+
+    res.status(201).json(newUsuario);
+  } catch (error) {
+    next(error);
+  }
 }
 
-export async function deletarUsuario(req: Request, res: Response) {
-  const id: number = Number(req.params.id);
+export async function atualizarUsuario(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const id: number = Number(req.params.id);
 
-  await prisma.usuario.delete({ where: { id } });
+    const resultado = atualizarUsuarioSchema.safeParse(req.body);
 
-  res.json({ message: "User deleted sucessfully!" });
+    if (!resultado.success) {
+      return res
+        .status(400)
+        .json({ erro: resultado.error.flatten().fieldErrors });
+    }
+
+    const { nome, email } = resultado.data;
+
+    const usuario = await prisma.usuario.update({
+      where: { id },
+      data: { nome, email },
+    });
+
+    res.json(usuario);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function deletarUsuario(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const id: number = Number(req.params.id);
+
+    await prisma.usuario.delete({ where: { id } });
+
+    res.json({ message: "User deleted sucessfully!" });
+  } catch (error) {
+    next(error);
+  }
 }
