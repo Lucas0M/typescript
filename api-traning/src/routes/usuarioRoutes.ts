@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { auth } from "../middlewares/auth";
 
 import {
   listarUsuarios,
@@ -12,8 +13,8 @@ const router = Router();
 
 router.get("/", listarUsuarios);
 router.get("/:id", buscarUsuario);
-router.post("/", criarUsuario);
-router.put("/:id", atualizarUsuario);
-router.delete("/:id", deletarUsuario);
+router.post("/", auth, criarUsuario);
+router.put("/:id", auth, atualizarUsuario);
+router.delete("/:id", auth, deletarUsuario);
 
 export default router;
